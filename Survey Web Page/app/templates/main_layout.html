@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}{% endblock %}</title>
+    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='materialize/css/materialize.css') }}"
+            media="screen,projection"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    {% block custom_css %}{% endblock %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+</head>
+{% block header %}{% endblock %}
+{% block sidenav %}{% endblock %}
+{% block main %}{% endblock %}
+{% block footer %}{% endblock %}
+<body>
+<script type="text/javascript" src="{{ url_for('static', filename='materialize/js/jQuery.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='materialize/js/materialize.js') }}"></script>
+<script>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                M.toast({html: '{{ message }}', classes: "rounded brown darken-3"});
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    $(document).ready(function () {
+        $('.modal').modal();
+        $('.dropdown-trigger').dropdown({constrainWidth: false});
+        $('.fixed-action-btn').floatingActionButton();
+        $('select').formSelect();
+        $('.sidenav').sidenav();
+        $('.collapsible').collapsible();
+    });
+</script>{% block custom_js %}{% endblock %}
+</body>
+</html>

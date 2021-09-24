@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:fillViewport="true">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/gradient">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:paddingLeft="24dp"
+            android:paddingRight="24dp"
+            android:id="@+id/linearLayout">
+
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="wrap_content"
+                android:layout_height="410dp"
+                app:srcCompat="@drawable/mtb" />
+
+            <EditText
+                android:id="@+id/editName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:layout_marginBottom="10dp"
+                android:backgroundTint="#f4fcfe"
+                android:drawableRight="@drawable/profilemtb"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:fontFamily="sans-serif-light"
+                android:hint="Username"
+                android:textColor="#f4fcfe"
+                android:textColorHint="#f4fcfe" />
+
+            <EditText
+                android:id="@+id/editPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:backgroundTint="#f4fcfe"
+                android:drawableRight="@drawable/keymtb"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:fontFamily="sans-serif-light"
+                android:hint="Password"
+                android:inputType="textPassword"
+                android:textColor="#f4fcfe"
+                android:textColorHint="#f4fcfe" />
+
+            <EditText
+                android:id="@+id/editEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:backgroundTint="#f4fcfe"
+                android:drawableRight="@drawable/emailmtb"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:visibility="gone"
+                android:fontFamily="sans-serif-light"
+                android:hint="Email"
+                android:inputType="textEmailAddress"
+                android:textColor="#f4fcfe"
+                android:textColorHint="#f4fcfe" />
+
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/button_gradient"
+                android:id="@+id/btnSignIn"
+                android:text="LOG IN"
+                android:textColor="#154c79"
+                android:textStyle="bold"
+                />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:id="@+id/btnRegister"
+                android:background="@drawable/button_gradient"
+                android:text="CREATE AN ACCOUNT"
+                android:textColor="#154c79"
+                android:textStyle="bold"
+                />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="40dp"
+                android:id="@+id/btnBack"
+                android:background="@drawable/button_gradient"
+                android:text="GO BACK"
+                android:textColor="#154c79"
+                android:textStyle="bold"
+                android:visibility="gone"
+                />
+
+        </LinearLayout>
+
+
+
+
+    </RelativeLayout>
+
+</ScrollView>
+

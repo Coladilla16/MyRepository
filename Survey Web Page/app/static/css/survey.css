@@ -1,0 +1,14 @@
+body > header, body > main, body > footer {
+    padding-left: 300px;
+}
+
+
+@media only screen and (max-width: 992px) {
+    body > header, body > main, body > footer {
+        padding-left: 0;
+    }
+}
+
+.sidenav li.active {
+    background-color: rgba(188, 170, 164, 0.5);
+}

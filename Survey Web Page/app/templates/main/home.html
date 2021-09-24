@@ -1,0 +1,36 @@
+{% extends 'main/layout.html' %}
+{% block title %}Home | Survey{% endblock %}
+{% block content %}
+    <section class="container row">
+        <h1 class="col s12 brown-text text-darken-2">Welcome 😊</h1>
+        <h4 class="col s12 brown-text">Enter the URL of the survey you want to answer</h4>
+        <div class="input-field col s12">
+            <div><label>Survey URL<input id="survey_url" type="text" name="survey_url" class="validate" required/></label></div>
+        </div>
+        <button class="btn-flat brown lighten-2 btn-large col s12 brown-text text-darken-2" id="answer_btn">Submit</button>
+    </section>
+{% endblock %}
+{% block custom_js %}
+    <script>
+        $(document).ready(function () {
+            $('#answer_btn').click(function () {
+                if ($('#survey_url').val().trim() == ''){
+                    M.toast({
+                        html: "You have not entered a URL",
+                        classes: "rounded brown darken-2"
+                    });
+                }
+                else {
+                    let url =  $('#survey_url').val().trim();
+                    let host = '{{ request.host }}';
+                    if (url.startsWith(host)){
+                        window.location.href = (url.substr(host.length, url.length));
+                    }
+                    else {
+                        window.location.href = url;
+                    }
+                }
+            });
+        });
+    </script>
+{% endblock %}

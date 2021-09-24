@@ -1,0 +1,27 @@
+{% extends 'auth/layout.html' %}
+{% block title %}Sign Up | Survey{% endblock %}
+{% block nav_items %}
+    <a href="{{ url_for('auth.login') }}" class = "chip">🔵 Login</a>
+{% endblock %}
+{% block content %}
+    <h3 class="brown-text center">Sign Up to Survey</h3>
+    <div class="row">
+        <div class=" col s12 l6 offset-l3 brown lighten-5">
+            <form action="" method="post">
+                <div class="input-field col s10 offset-s1">
+                    <div><label>Email: <input type="email" name="email" required/></label></div>
+                    <div><label>First name: <input type="text" name="first_name" required/></label></div>
+                    <div><label>Last name: <input type="text" name="last_name" required/></label></div>
+                    <div><label>Password: <input type="password" name="password" required/></label></div>
+                    <div><label>Repeat password: <input type="password" name="password_repeat" required/></label></div>
+                </div>
+                <div class="col s10 offset-s1">
+                    <input type="submit" value="Sign Up"
+                    class="col s10 offset-s1 btn brown lighten-3 btn-flat brown-text text-darken-2">
+                </div>
+            </form>
+        </div>
+    </div>
+    <p class="center brown-text text-darken-2">Click on the LOG IN button above if you already have an
+        account</p>
+{% endblock %}

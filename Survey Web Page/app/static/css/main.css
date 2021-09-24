@@ -1,0 +1,18 @@
+blockquote {
+    border-left: 5px solid #795548;
+    color: #4e342e;
+}
+
+body {
+    background-color: #efebe9;
+}
+
+body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
+main {
+    flex: 1 0 auto;
+}

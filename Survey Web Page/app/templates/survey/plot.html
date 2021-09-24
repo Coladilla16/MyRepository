@@ -1,0 +1,22 @@
+{% extends 'survey/layout.html' %}
+{% block title %}Visualize Survey Results | Question {{question.id}}{% endblock %}
+{% block content %}
+    <div class="center nav-wrapper container">
+        <nav class="brown lighten-2">
+            <ul>
+                <p class="center"><a class="chip" href="{{ url_for('survey.details', survey_id=survey.id) }}" id="details_link"><span class="blue-text">📂 SURVEY DETAILS 📂</span></a>
+                <a class="chip" href="{{ url_for('survey.results', survey_id=survey.id) }}" id="view_results_link"><span class="blue-text">📄 VIEW RESULTS 📄</span></a>
+                <a class="chip" href="{{ url_for('survey.visualize_results', survey_id=survey.id) }}" id="view_results_link"><span class="blue-text">📊 VISUALIZE RESULTS 📊</span></a></p>
+            </ul>
+        </nav>
+    </div>
+    <div class="divider"></div>
+    <section class="container center">
+        <h1 class="center brown-text text-darken-2">Question {{pos}}:</h1>
+        <h3 class="center brown-text">{{text}}</h3>
+          
+    </section>
+    <section class=center>
+        <img src="data:image/png;base64,{{ plot_url }}",>
+    </section>
+{% endblock %}

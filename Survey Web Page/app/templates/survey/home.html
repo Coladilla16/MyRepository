@@ -1,0 +1,76 @@
+{% extends 'survey/layout.html' %}
+{% block title %}Dashboard | Survey{% endblock %}
+{% block content %}
+    <section class="container row center">
+        <h2 class="brown-text text-darken-2">{{ current_user.first_name }}'s Surveys</h2>
+        <h4 class="brown-text">Create and manage your surveys here.</h3>
+    </section>
+    <div class="divider"></div>
+    <section class="container row center">
+        
+        <section>
+            <ul>
+                <li><a class="chip modal-trigger" href="#quick_add"><span class="blue-text">➕ CREATE NEW SURVEY ➕</span></a></li>
+            </ul>
+        </section>
+        <p class="brown-text text-darken-4">Click on any survey to access its details</p>
+        {% if current_user.surveys %}
+            <table class="centered card brown lighten-4 col s12 z-depth-0">
+                <thead>
+                <tr class= "brown-text text-darken-2">
+                    <th>TITLE</th>
+                    <th>STATE</th>
+                    <th>DESCRIPTION</th>
+                </tr>
+                </thead>
+                <tbody id="survey_list" class="brown-text">
+                {% for survey in current_user.surveys %}
+                    <tr id="{{ survey.id }}">
+                        <td>{{ survey.title }}</td>
+                        {% if survey.state.value == "New" %}
+                            <td class="blue-text">DEVELOPING</td>
+                        {% elif survey.state.value == "Online" %}
+                            <td class="green-text">ONLINE</td>
+                        {% else %}
+                            <td class="red-text">CLOSED</td>
+                        {% endif %}
+                        <td>{{ survey.description }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>You currently have no surveys.</p>
+        {% endif %}
+    </section>
+    <div id="quick_add" class="modal bottom-sheet">
+        <form action="{{ url_for('survey.create') }}" method="post">
+            <div class="modal-content row">
+                <h4 class="col s12 brown-text">Quick Add</h4>
+                <div class="divider col s12"></div>
+                {{ form.hidden_tag() }}
+                <div class="input-field col s12 l6">
+                    {{ form.survey_title }}
+                    {{ form.survey_title.label }}
+                </div>
+                <div class="input-field col s12 l6">
+                    {{ form.survey_description(class='materialize-textarea') }}
+                    {{ form.survey_description.label }}
+                </div>
+            </div>
+            <div class="modal-footer">
+                <input type="submit" value="create" class="brown white-text waves-effect waves-green btn-flat lighten-1">
+                <a href="#!" class="modal-close waves-effect waves-green btn-flat red-text">cancel</a>
+            </div>
+        </form>
+    </div>
+{% endblock %}
+{% block custom_js %}
+    <script>
+        $(document).ready(function () {
+            $('#survey_list tr').click(function () {
+                window.location.href = "/survey/" + $(this).attr('id') + "/details"
+            });
+        })
+    </script>
+{% endblock %}

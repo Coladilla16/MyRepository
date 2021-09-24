@@ -1,0 +1,46 @@
+{% extends 'main/layout.html' %}
+{% block title %}Answer | Survey{% endblock %}
+{% block content %}
+    <section class="container">
+        <h2 class="center brown-text text-darken-3">{{ survey.title }}</h2>
+        <h4 class="center brown-text">{{ survey.description }}</h3>
+    </section>
+    <div class="divider"></div>
+    <form class="container row" method="post" action="{{ url_for('survey.answer', survey_id=survey.id) }}">
+        {% for question in survey.questions %}
+            <div class="col s12 valign-wrapper">
+                <h5 class="brown-text col s1">{{ question.position }}</h5>
+                {% if question.type.value == "Text" %}
+                    <div class="input-field col s11">
+                        <div><label>{{ question.question_statement }}<input id="{{ question.id }}" type="text" class="validate" name="{{ question.id }}" required></label></div>
+                    </div>
+                {% elif question.type.value == "Number" %}
+                    <div class="input-field col s11">
+                        <div><label>{{ question.question_statement }}<input id="{{ question.id }}" type="text" class="validate" name="{{ question.id }}" required></label></div>
+                    </div>
+                {% elif question.type.value == "Single Choice" %}
+                    <div class="input-field col s11">
+                        <select name="{{ question.id }}" required>
+                            {% for option in question.options %}
+                                <option value="{{ option.id }}">{{ option.option_text }}</option>
+                            {% endfor %}
+                        </select>
+                        <label for="{{ question.id }}">{{ question.question_statement }}</label>
+                    </div>
+                {% else %}
+                    <div class="input-field col s11">
+                        <select multiple name="{{ question.id }}" required>
+                            {% for option in question.options %}
+                                <option value="{{ option.id }}">{{ option.option_text }}</option>
+                            {% endfor %}
+                        </select>
+                        <label for="{{ question.id }}">{{ question.question_statement }}</label>
+                    </div>
+                {% endif %}
+            </div>
+        {% endfor %}
+        <div class="col s12 center-align">
+            <input type="submit" value="submit answers" class="btn-flat btn-large brown white-text">
+        </div>
+    </form>
+{% endblock %}

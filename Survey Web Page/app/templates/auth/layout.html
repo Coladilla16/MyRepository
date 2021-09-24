@@ -1,0 +1,30 @@
+{% extends 'main_layout.html' %}
+{% block header %}
+    <header>
+        <div class="center nav-wrapper container">
+            <h1>🎓 MySimpleSurveys 🎓</h1>
+            <nav class="brown darken-2">
+                <ul>
+                    <p><a href="{{ url_for('main.home') }}" class = "chip">🏠 Home</a>
+                    {% block nav_items %}
+                    {% endblock %}
+                    </p>
+                </ul>
+            </nav>
+        </div>
+    </header>
+{% endblock %}
+{% block main %}
+    <main class="container">
+        {% block content %}{% endblock %}
+    </main>
+{% endblock %}
+{% block footer %}
+    <footer class="page-footer brown darken-2">
+        <div>
+            <div class="container">
+                Developer: Yuste & Gon Designs
+            </div>
+        </div>
+    </footer>
+{% endblock %}

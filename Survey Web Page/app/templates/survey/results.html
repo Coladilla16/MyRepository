@@ -1,0 +1,74 @@
+{% extends 'survey/layout.html' %}
+{% block title %}Survey Results | Survey{% endblock %}
+{% block content %}
+    <section class="container row center">
+        <h2 class="brown-text text-darken-4">{{ survey.title }}'s Results</h2>
+        <h4 class="brown-text">Check out the people answers here.</h3>
+    </section>
+    <div class="divider"></div>
+    <div class="center nav-wrapper container">
+        <nav class="brown lighten-2">
+            <ul>
+                <p class="center"><a class="chip" href="{{ url_for('survey.details', survey_id=survey.id) }}" id="details_link"><span class="blue-text">📂 SURVEY DETAILS 📂</span></a>
+                <a class="chip" href="{{ url_for('survey.download_results', survey_id=survey.id) }}" id="view_results_link"><span class="blue-text">⬇️ DOWNLOAD RESULTS ⬇️</span></a>
+                <a class="chip" href="{{ url_for('survey.visualize_results', survey_id=survey.id) }}" id="view_results_link"><span class="blue-text">📊 VISUALIZE RESULTS 📊</span></a></p>
+            </ul>
+        </nav>
+    </div>
+    <div class="divider"></div>
+    {% if survey.answers %}
+        <section class="row container">
+            {% for question in survey.questions %}
+                <div class="card brown lighten-4 col s12 z-depth-0">
+                    <div class="card-content white-text">
+                    <span class="card-title brown-text text-lighten-2">Question {{ question.position }}: <span
+                            class="brown-text text-darken-2">{{ question.question_statement }}</span>
+                    </span>
+                        <table>
+                            <thead>
+                            <tr class="brown-text text-darken-2">
+                                <th>Answer ID</th>
+                                <th>Answer submitted</th>
+                            </tr>
+                            </thead>
+                            <tbody class="brown-text">
+                            {% if question.type.value == "Number" %}
+                                {% for answer in question.answers %}
+                                    <tr>
+                                        <td>{{ answer.survey_answer_id }}</td>
+                                        <td>{{ answer.integer_answer }}</td>
+                                    </tr>
+                                {% endfor %}
+                            {% elif question.type.value == "Text" %}
+                                {% for answer in question.answers %}
+                                    <tr>
+                                        <td>{{ answer.survey_answer_id }}</td>
+                                        <td>{{ answer.text_answer }}</td>
+                                    </tr>
+                                {% endfor %}
+                            {% elif question.type.value == "Single Choice" %}
+                                {% for answer in question.answers %}
+                                    <tr>
+                                        <td>{{ answer.survey_answer_id }}</td>
+                                        <td>{{ answer.selected_option.option_text }}</td>
+                                    </tr>
+                                {% endfor %}
+                            {% else %}
+                                {% for answer in question.answers %}
+                                    <tr>
+                                        <td>{{ answer.survey_answer_id }}</td>
+                                        <td>{% for option in answer.selected_options %} {{ option.option_text }}
+                                            , {% endfor %}</td>
+                                    </tr>
+                                {% endfor %}
+                            {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            {% endfor %}
+        </section>
+    {% else %}
+        <p class="container">No answers have been submitted for this survey yet.</p>
+    {% endif %}
+{% endblock %}

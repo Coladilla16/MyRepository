@@ -1,0 +1,48 @@
+{% extends 'survey/layout.html' %}
+{% block title %}Visualize Survey Results | Survey{% endblock %}
+{% block content %}
+    <section class="container row center">
+        <h2 class="brown-text text-darken-2">{{ survey.title }}'s Visualization</h2>
+        <h4 class="brown-text">Click on any question to access its results' visualization.</h3>
+    </section>
+    <div class="divider"></div>
+    <div class="center nav-wrapper container">
+        <nav class="brown lighten-2">
+            <ul>
+                <p class="center"><a class="chip" href="{{ url_for('survey.details', survey_id=survey.id) }}" id="details_link"><span class="blue-text">📂 SURVEY DETAILS 📂</span></a>
+                <a class="chip" href="{{ url_for('survey.results', survey_id=survey.id) }}" id="view_results_link"><span class="blue-text">📄 VIEW RESULTS 📄</span></a></p>
+            </ul>
+        </nav>
+    </div>
+    <section class="container row center">
+        {% if current_user.surveys %}
+            <table class="centered card brown lighten-4 col s12 z-depth-0">
+                <thead>
+                <tr class= "brown-text text-darken-2">
+                    <th>Position</th>
+                    <th>Text</th>
+                </tr>
+                </thead>
+                <tbody id="question_list" class="brown-text">
+                {% for question in survey.questions %}
+                    <tr id="{{ question.id }}">
+                        <td>{{ question.position }}</td>
+                        <td>{{ question.question_statement }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>You currently have no surveys.</p>
+        {% endif %}
+    </section>
+{% endblock %}
+{% block custom_js %}
+    <script>
+        $(document).ready(function () {
+            $('#question_list tr').click(function () {
+                window.location.href = "/survey/{{survey.id}}/question/"+ $(this).attr('id') + "/plot"
+            });
+        })
+    </script>
+{% endblock %}

@@ -1,0 +1,296 @@
+{% extends 'survey/layout.html' %}
+{% block title %}Survey Details | Survey{% endblock %}
+{% block content %}
+<section class="container row center">
+    <h2 class="brown-text text-darken-2">{{ survey.title }}'s Details</h2>
+    <h4 class="brown-text">Create questions and check information here.</h3>
+</section>
+<div class="divider"></div>
+    <div class="center nav-wrapper container">
+        <nav class="brown lighten-2">
+            <ul>
+                <p class = center>
+                    {% if survey.state.value == "New" %}
+                        <a class="chip" href="#!" id="view_results_link"><span class="blue-text">📄 VIEW RESULTS 📄</span></a>
+                    {% else %}
+                        <a class="chip" href="{{ url_for('survey.results', survey_id=survey.id) }}" id="view_results_link"><span class="blue-text">📄 VIEW RESULTS 📄</span></a>
+                    {% endif %}
+                    <a class="chip" href="#!" id="delete_survey_btn"><span class="red-text">🗑️ DELETE SURVEY 🗑️</span></a>
+                </p>
+            </ul>
+        </nav>
+    </div>
+    </section>
+    
+    <section class="container row">
+        <section class="container row center brown-text">
+            
+        </section>
+        <table class="centered">
+            <tbody id="survey_list" class="brown-text">
+            <tr>
+                <td class="brown-text text-darken2"><b>Description</b></td>
+                <td>{{ survey.description }}</td>
+            </tr>
+            <tr>
+                <td class="brown-text text-darken-2"><b>Created on</b></td>
+                <td>{{ survey.fdate_created }}</td>
+            </tr>
+            <tr>
+                <td class="brown-text text-darken-2"><b>State</b></td>
+                <td>                
+                {% if survey.state.value == "Online" %}
+                    <span class="green-text">ONLINE</span>
+                {% elif survey.state.value == "Closed" %}
+                    <span class="red-text">CLOSED</span>
+                {% else %}
+                    <span class="blue-text">DEVELOPING</span>
+                {% endif %}
+                </td>
+            </tr>
+            {% if survey.state.value == "Online" %}
+            <tr>
+                <td class="brown-text text-darken-2"><b>Survey URL</b></td>
+                <td><b> {{ request.host + '/survey/' }}{{ survey.id }}/answer</b></td>
+            </tr>
+            {% endif %}
+            </tbody>
+        </table>
+        <section class="center brown-text">
+            {% if survey.state.value == "New" %}
+            <p>Change survey state to:
+                <span><a class="green-text" href="{{ url_for('survey.change_state', survey_id=survey.id, state="ONLINE") }}">ONLINE</a></span>
+            </p>
+            {% endif %}
+            {% if survey.state.value == "Online" %}
+            <p>Change survey state to:
+                <span><a class="red-text" href="{{ url_for('survey.change_state', survey_id=survey.id, state="CLOSED") }}">CLOSED</a></span>
+            </p>
+            {% endif %}
+        </section>
+    </section>
+    <div class="divider"></div>
+    <section class="center container row">
+        <h3 class="brown-text">Questions on this survey</h3>
+        <section>
+            <section>
+                {% if survey.state.value == "New" %}
+                    <p><a class="chip modal-trigger" href="#quick_add"><span class="green-text">➕ ADD QUESTION ➕</span></a></p>
+                {% endif %}
+                {% if survey.state.value == "Online" %}
+                    <p><a class="chip" id="add_question"><span class="green-text">➕ ADD QUESTION ➕</span></a></p>
+                {% endif %}
+            </section>
+        </section>
+        {% if survey.questions %}
+            {% if survey.state.value == "New" %}
+                {% for question in survey.questions %}
+                    {% if question.type.value == "Number" or question.type.value == "Text" %}
+                        <div class="card col s12 brown lighten-4 z-depth-0">
+                            <div class="card-content">
+                                <span class="card-title activator grey-text text-darken-4">
+                                    Question {{ question.position }}: {{ question.question_statement }}
+                                    <i class="right">➕</i>
+                                </span>
+                            </div>
+                            <div class="card-reveal">
+                                <span class="card-title grey-text text-darken-4">
+                                    <a href="{{ url_for('survey.delete_question', survey_id=survey.id, question_id=question.id) }}"
+                                       class="btn-flat red white-text">delete</a>
+                                    <i class=" right">❌</i>
+                                </span>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="card col s12 brown lighten-4 z-depth-0">
+                            <div class="card-content">
+                                <span class="card-title activator grey-text text-darken-4">
+                                    Question {{ question.position }}: {{ question.question_statement }}
+                                    <i class="right">➕</i>
+                                </span>
+                                {% if question.options %}
+                                    {% for option in question.options %}
+                                        <div class="chip">
+                                            {{ option.option_text }}
+                                        </div>
+                                    {% endfor %}
+                                {% else %}
+                                    <p class="red-text">Choice question has no options.</p>
+                                {% endif %}
+                            </div>
+                            <div class="card-reveal">
+                                <span class="card-title grey-text text-darken-4">
+                                    <a href="{{ url_for('survey.delete_question', survey_id=survey.id, question_id=question.id) }}"
+                                       class="btn-flat red white-text">delete</a>
+                                    <button class="btn btn-flat green white-text disabled add_option_btn"
+                                            id="add_option_btn_{{ question.id }}">add options</button>
+                                    <i class="right">❌</i>
+                                </span>
+                                <div class="chips chips-placeholder" id="option_chips_{{ question.id }}"></div>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% else %}
+                {% for question in survey.questions %}
+                    {% if question.type.value == "Number" or question.type.value == "Text" %}
+                        <div class="card col s12 brown lighten-4 z-depth-0">
+                            <div class="card-content">
+                                <span class="card-title grey-text text-darken-4">
+                                    Question {{ question.position }}: {{ question.question_statement }}
+                                </span>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="card col s12 brown lighten-4 z-depth-0">
+                            <div class="card-content">
+                                <span class="card-title grey-text text-darken-4">
+                                    Question {{ question.position }}: {{ question.question_statement }}
+                                </span>
+                                {% if question.options %}
+                                    {% for option in question.options %}
+                                        <div class="chip">
+                                            {{ option.option_text }}❌
+                                        </div>
+                                    {% endfor %}
+                                {% else %}
+                                    <p class="red-text text-lighten-2">Choice question has no options.</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        {% else %}
+            <p>This survey currently has no questions on it.</p>
+        {% endif %}
+    </section>
+    {% if survey.state.value == "New" %}
+        <div id="quick_add" class="modal bottom-sheet">
+            <form action="{{ url_for('survey.add_question', survey_id=survey.id) }}" method="post">
+                {{ question_form.hidden_tag() }}
+                <div class="modal-content row">
+                    <h4 class="col s12 brown-text">Quick Add</h4>
+                    <div class="divider col s12"></div>
+                    <div class="col s12 l6">
+                        <h6 class="col s12 ">What is your question?</h6>
+                        <div class="input-field col s12">
+                            {{ question_form.question_text }}
+                            {{ question_form.question_text.label }}
+                        </div>
+                    </div>
+                    <div class="col s12 l6">
+                        <h6 class="col s12 ">What type or question is this?</h6>
+                        <div class="col s12">
+                            {% for field in question_form.type %}
+                                <p class="col s6 l3">
+                                    <label>
+                                        {{ field }}
+                                        <span>{{ field.label.text }}</span>
+                                    </label>
+                                </p>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="submit" value="create" class="brown waves-effect waves-green btn-flat lighten-1">
+                    <a href="#!" class="center modal-close waves-effect waves-green btn-flat red-text">cancel</a>
+                </div>
+            </form>
+        </div>
+    {% endif %}
+{% endblock %}
+{% block custom_js %}
+    {% if survey.state.value == "New" %}
+        <script>
+            $(document).ready(function () {
+                $('#view_results_link').click(function () {
+                    M.toast({
+                        html: "Survey Results are not available. Survey is in NEW state",
+                        classes: "rounded brown darken-3"
+                    });
+                });
+                let optionsChips = $('.chips-placeholder');
+                optionsChips.chips({
+                    placeholder: 'Enter options',
+                    secondaryPlaceholder: '+Option',
+                    onChipAdd: function () {
+                        let instance = ($(this)[0]);
+                        let questionId = $(instance.el).attr('id').slice($(instance.el).attr('id').length - 1);
+                        let add_option_button = $('#add_option_btn_' + questionId);
+
+                        if (add_option_button.hasClass('disabled')) {
+                            add_option_button.removeClass('disabled');
+                        }
+
+                    },
+                    onChipDelete: function () {
+                        let instance = ($(this)[0]);
+                        let questionId = $(instance.el).attr('id').slice($(instance.el).attr('id').length - 1);
+                        let add_option_button = $('#add_option_btn_' + questionId);
+
+                        if (instance.chipsData.length == 0) {
+                            add_option_button.addClass('disabled');
+                        }
+                    }
+                });
+                $('.add_option_btn').click(function () {
+                    let questionId = $(this).attr('id').slice($(this).attr('id').length - 1);
+                    let instance = M.Chips.getInstance($('#option_chips_' + questionId));
+                    let options = [];
+                    instance.chipsData.forEach(function (tag, index) {
+                        options.push(tag.tag);
+                    });
+                    $.ajax({
+                        type: "POST",
+                        url: '/survey/{{ survey.id }}/question/' + questionId + "/add_option",
+                        contentType: 'application/json',
+                        data: JSON.stringify(options),
+                        success: function (data) {
+                            console.log(data);
+                            location.reload();
+                        }
+                    });
+                });
+            });
+        </script>
+    {% elif survey.state.value == "Online" %}
+        <script>
+            $(document).ready(function () {
+                $('#add_question').click(function () {
+                    M.toast({
+                        html: "Sorry, survey is not editable in the ONLINE state",
+                        classes: "rounded brown darken-3"
+                    });
+                });
+                $('#copy_survey_url').click()
+            })
+        </script>
+    {% endif %}
+    <script>
+        $(document).ready(function () {
+            let deleteButtonClicked = false;
+            $('#delete_survey_btn').click(function () {
+                if (deleteButtonClicked) return;
+                let deleteCanceled = false;
+                toastHTML = '<span>Survey will be deleted in 3 seconds!!</span><button class="btn-flat toast-action" id="undo_delete_survey">undo</button>';
+                M.toast({
+                    html: toastHTML,
+                    displayLength: 3000,
+                    classes: "rounded brown darken-3 white-text",
+                    completeCallback: function () {
+                        if (!deleteCanceled) {
+                            window.location.href = "/survey/{{ survey.id }}/delete";
+                        }
+                    },
+                });
+                $('#undo_delete_survey').one('click', function () {
+                    deleteCanceled = true;
+                    deleteButtonClicked = false;
+                });
+                deleteButtonClicked = true;
+            });
+        });
+    </script>
+{% endblock %}

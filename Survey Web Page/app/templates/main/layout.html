@@ -1,0 +1,35 @@
+{% extends 'main_layout.html' %}
+{% block header %}
+    <header>
+        <div class="center nav-wrapper container">
+            <h1>🎓 MySimpleSurveys 🎓</h1>
+            <nav class="brown darken-2">
+                <ul class="center">
+                    <p><a href="{{ url_for('main.home') }}" class = "chip">🏠 Home</a>
+                    {% if current_user.is_authenticated %}
+                        <a href="{{ url_for('survey.home') }}"class = "chip">📘 Dashboard</a>
+                        <a href="{{ url_for('auth.logout') }}" class = "chip">🔴 Log out</a>
+                    {% else %}
+                        <a href="{{ url_for('auth.login') }}" class = "chip">🔵 Login</a>
+                        <a href="{{ url_for('auth.signup') }}" class = "chip">🟢 Sign Up</a>
+                    {% endif %}
+                    </p>
+                </ul>
+            </nav>
+        </div>
+    </header>
+{% endblock %}
+{% block main %}
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+{% endblock %}
+{% block footer %}
+    <footer class="page-footer brown darken-2">
+        <div>
+            <div class="container">
+                Developer: Yuste & Gon Designs
+            </div>
+        </div>
+    </footer>
+{% endblock %}
