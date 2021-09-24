@@ -16,4 +16,8 @@ A web page where a user can create different types of surveys that people can re
 
 ### 4 - PageRank 
 
-In this file I developed a program able to implement the PageRank algorithm to 5 mill Wikipedia web pages. 
+In this file I developed a program able to implement the PageRank algorithm to 5 mill Wikipedia web pages.
+
+### 5 - Mate Buddy Trips App
+
+App developed with AndroidStudio using Java and PHP. This app is able to register users, create and modify complete profiles, publish trips and their main characteristics... Then, based on each user's personality type we can recommend them other users they may want to travel with and trips that they might like to be a part of.
